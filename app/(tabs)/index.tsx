@@ -17,7 +17,7 @@ export default function StockFilter() {
   const [error, setError] = useState<string | null>(null);
 
   const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('1000');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const categories = ['科技', '金融', '製造', '電信', '能源'];
@@ -136,7 +136,7 @@ export default function StockFilter() {
               <Text style={styles.inputLabel}>最高價</Text>
               <TextInput
                 style={styles.priceInput}
-                placeholder="9999"
+                placeholder="1000"
                 keyboardType="decimal-pad"
                 value={maxPrice}
                 onChangeText={setMaxPrice}

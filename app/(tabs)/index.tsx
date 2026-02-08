@@ -26,7 +26,7 @@ export default function StockFilter() {
     fetchStocks();
   }, []);
 
-  const fetchStocks = async () => {
+const fetchStocks = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -38,8 +38,21 @@ export default function StockFilter() {
 
       if (fetchError) throw fetchError;
 
-      setStocks(data || []);
-      setFilteredStocks(data || []);
+      const allStocks = data || [];
+      setStocks(allStocks);
+      
+      // ----------- 修改開始 -----------
+      // 這裡直接套用預設的 1000 元過濾邏輯
+      let initialFiltered = [...allStocks];
+      if (maxPrice !== '') { // 這裡會讀到你設定的 '1000'
+         const max = parseFloat(maxPrice);
+         if (!isNaN(max)) {
+           initialFiltered = initialFiltered.filter(s => s.price <= max);
+         }
+      }
+      setFilteredStocks(initialFiltered);
+      // ----------- 修改結束 -----------
+
     } catch (err) {
       setError(err instanceof Error ? err.message : '載入股票資料失敗');
     } finally {
@@ -47,13 +60,7 @@ export default function StockFilter() {
     }
   };
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
-  };
+  
 
   const handleFilter = () => {
     let filtered = [...stocks];
